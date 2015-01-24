@@ -3,13 +3,10 @@
 #include <RuleSSL/GameRoot.h>
 #include <RuleSSL/RobotCommand.h>
 
-#include <stdlib.h>
-#include <time.h>
-
 void ExampleApplication::createGame() {
 }
 
-void ExampleApplication::refereeCommandRetrieved(Rule::RefereeCommand refereeCommand) {
+void ExampleApplication::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> refereeCommand) {
 }
 
 void ExampleApplication::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> visionFrames) {

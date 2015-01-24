@@ -5,7 +5,7 @@
 
 class ExampleApplication : public BaseApplication {
 public:
-    virtual void refereeCommandRetrieved(Rule::RefereeCommand refereeCommand) override;
+    virtual void refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> refereeCommand) override;
     virtual void visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> visionFrames) override;
 protected:
     virtual void createGame() override;
