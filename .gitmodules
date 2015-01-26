@@ -1,0 +1,3 @@
+[submodule "RuleSSL"]
+	path = RuleSSL
+	url = git@github.com:RoboCupULaval/RuleSSL.git
