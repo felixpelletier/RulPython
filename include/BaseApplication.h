@@ -1,8 +1,8 @@
 #ifndef __BaseApplication_H_
 #define __BaseApplication_H_
 
-#include <RuleSSL/VisionListener.h>
-#include <RuleSSL/RefereeListener.h>
+#include <VisionListener.h>
+#include <RefereeListener.h>
 
 #include <boost/asio/io_service.hpp>
 

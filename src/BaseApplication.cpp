@@ -1,11 +1,12 @@
 #include "BaseApplication.h"
 
-#include <RuleSSL/GameRoot.h>
-#include <RuleSSL/VisionPlugin.h>
-#include <RuleSSL/RefereePlugin.h>
-#include <RuleSSL/UDPNavigatorPlugin.h>
-#include <RuleSSL/UDPInputStream.h>
-#include <RuleSSL/RobotCommand.h>
+#include <GameRoot.h>
+#include <VisionPlugin.h>
+#include <RefereePlugin.h>
+#include <UDPNavigatorPlugin.h>
+#include <UDPInputStream.h>
+#include <RobotCommand.h>
+#include <iostream>
 
 BaseApplication::BaseApplication() {
     this->io_service = new boost::asio::io_service;
@@ -21,6 +22,7 @@ void BaseApplication::initialize(){
     this->createGame();
 
     Rule::GameRoot::getSingleton().initialize();
+
 }
 
 void BaseApplication::createListeners() {
@@ -42,4 +44,5 @@ void BaseApplication::run() {
     this->initialize();
 
     Rule::GameRoot::getSingleton().start();
+	std::cout << "lol\n";
 }

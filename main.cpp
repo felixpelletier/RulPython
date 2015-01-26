@@ -1,6 +1,7 @@
 #include "ExampleApplication.h"
 
-#include <RuleSSL/RuleException.h>
+#include <RuleException.h>
+#include <iostream>
 
 int main() {
     ExampleApplication app;
