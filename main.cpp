@@ -1,7 +1,5 @@
 #include "ExampleApplication.h"
-
 #include <RuleException.h>
-#include <iostream>
 
 int main() {
     ExampleApplication app;

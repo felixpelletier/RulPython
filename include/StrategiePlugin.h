@@ -13,7 +13,6 @@ class StrategiePlugin : public Rule::Plugin {
     		virtual void shutdown() override;
     		virtual void uninstall() override;
 
-		StrategiePlugin();
 		~StrategiePlugin();
 };
 

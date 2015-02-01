@@ -1,13 +1,16 @@
-#include <boost/thread.hpp> 
 #include <boost/python.hpp>
+#include <thread>
 
 class StrategieEngine {
-	
-	void updatePosition();
-	private:
-		boost::thread updateThread;
-	public:
-		StrategieEngine();
-		~StrategieEngine();
+public:
+    StrategieEngine();
+    ~StrategieEngine();
+
+    void updatePosition();
+
+private:
+    std::thread updateThread;
+    bool threadTerminated = false;
+
 };
 

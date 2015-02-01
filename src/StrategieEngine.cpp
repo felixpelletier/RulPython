@@ -1,5 +1,5 @@
 #include <StrategieEngine.h>
-#include <sys/time.h>
+#include <chrono>
 
 using namespace boost::python;
 using namespace boost::python::api;
@@ -20,11 +20,12 @@ StrategieEngine::StrategieEngine(){
     //pour pouvoir l'utiliser sur les autres threads
     PyEval_ReleaseLock(); 
    
-    this->updateThread = boost::thread(&StrategieEngine::updatePosition, this);//Démarrage du thread
+    this->updateThread = std::thread(&StrategieEngine::updatePosition, this);//Démarrage du thread
 }
 
 StrategieEngine::~StrategieEngine(){
-	this->updateThread.interrupt();
+	this->threadTerminated = true;
+    this->updateThread.join();
 	Py_Finalize();	
 }
 
@@ -43,13 +44,11 @@ void StrategieEngine::updatePosition(){
 		if (pFunc) {
 
 			//Boucle principale du thread (infinie pour l'instant)
-			while(1){
+			while(!this->threadTerminated){
 
 				pFunc(); //Call Python function
 
-				boost::this_thread::interruption_point();//This is where the thread stops if it gets interrupted
-
-				boost::this_thread::sleep(boost::posix_time::milliseconds(50));
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 
 		}
