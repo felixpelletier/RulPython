@@ -7,7 +7,7 @@ using namespace boost::python::api;
 StrategieEngine::StrategieEngine(){
 
     Py_Initialize();
-    PyEval_InitThreads(); 
+    PyEval_InitThreads();
     
     //Ajouter le dossier 'scripts' au path temporaire Python
     PyObject *sys = PyImport_ImportModule("sys");
