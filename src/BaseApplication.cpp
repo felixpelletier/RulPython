@@ -6,6 +6,7 @@
 #include <UDPNavigatorPlugin.h>
 #include <UDPInputStream.h>
 #include <RobotCommand.h>
+#include <iostream>
 
 BaseApplication::BaseApplication() {
     this->io_service = new boost::asio::io_service;

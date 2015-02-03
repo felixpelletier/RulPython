@@ -1,6 +1,8 @@
 #include <StrategieEngine.h>
 #include <chrono>
-
+#include <iostream>
+#include <GameRoot.h>
+#include <RobotCommand.h>
 using namespace boost::python;
 using namespace boost::python::api;
 
@@ -25,7 +27,7 @@ StrategieEngine::StrategieEngine(){
 
 StrategieEngine::~StrategieEngine(){
 	this->threadTerminated = true;
-    this->updateThread.join();
+	this->updateThread.join();
 	Py_Finalize();	
 }
 
@@ -42,13 +44,10 @@ void StrategieEngine::updatePosition(){
 		pFunc = pModule.attr("update");
 
 		if (pFunc) {
-
-			//Boucle principale du thread (infinie pour l'instant)
+			//Boucle principale du thread 
 			while(!this->threadTerminated){
-
 				pFunc(); //Call Python function
-
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 			}
 
 		}

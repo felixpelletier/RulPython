@@ -7,11 +7,12 @@
 
 std::shared_ptr<Rule::RobotCommand> statement;
 
-void sendCommand(Rule::RobotCommand robotCommand);
+void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand);
 
-void sendCommand(Rule::RobotCommand robotCommand){
-            std::shared_ptr<Rule::RobotCommand> robotCommand_p = std::make_shared<Rule::RobotCommand>(robotCommand);
-            Rule::GameRoot::getSingleton().addRobotCommand(robotCommand_p);
+void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
+            //std::shared_ptr<Rule::RobotCommand> robotCommand_p = std::make_shared<Rule::RobotCommand>(robotCommand);
+            //Rule::GameRoot::getSingleton().addRobotCommand(robotCommand_p);
+            Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
 
 std::shared_ptr<Rule::RobotCommand> getFizzy(){
@@ -28,8 +29,6 @@ std::shared_ptr<Rule::RobotCommand> getFizzy(){
 	fizzy->pose.coord.x = 342;
 	fizzy->pose.coord.y = rand() % 2;
 	fizzy->pose.orientation = 5;
-
-	std::cout << "lol\n";
 
 	statement = fizzy;
 
@@ -48,22 +47,9 @@ BOOST_PYTHON_MODULE(rule_python)
     using namespace Rule;
 
     def("sendCommand", &sendCommand);
-    def("getFizzy", &getFizzy);
-    def("getStatement", &getStatement);
 
-    class_<RobotCommand, std::shared_ptr<RobotCommand> >("RobotCommand_p",init<>())
+    class_<RobotCommand, std::shared_ptr<RobotCommand>>("RobotCommand", init<>())
             .def_readwrite("isTeamYellow", &RobotCommand::isTeamYellow)
-	    .def_readwrite("dribble", &RobotCommand::dribble)
-	    .def_readwrite("dribbleSpeed", &RobotCommand::dribbleSpeed)
-	    .def_readwrite("kick", &RobotCommand::kick)
-	    .def_readwrite("kickSpeed", &RobotCommand::kickSpeed)
-	    .def_readwrite("robotId", &RobotCommand::robotId)
-	    .def_readwrite("stop", &RobotCommand::stop)
-	    .def_readwrite("pose", &RobotCommand::pose);
-	    ;
-
-    class_<RobotCommand>("RobotCommand")
-	    .def_readwrite("isTeamYellow", &RobotCommand::isTeamYellow)
 	    .def_readwrite("dribble", &RobotCommand::dribble)
 	    .def_readwrite("dribbleSpeed", &RobotCommand::dribbleSpeed)
 	    .def_readwrite("kick", &RobotCommand::kick)

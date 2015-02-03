@@ -50,7 +50,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/RuleSSL/Exception/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/RuleSSL/Streams/include")
 
 add_executable(RulFramework main.cpp ${HEADER_FILES} ${SOURCE_FILES})
-target_link_libraries(RulFramework rule-ssl rule-streams rule-exception ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${PROTOBUF_LIBRARIES})
+target_link_libraries(RulFramework rule-ssl rule-streams rule-exception ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${PROTOBUF_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 add_subdirectory(Python)
 
