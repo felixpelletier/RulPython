@@ -9,7 +9,7 @@ void PythonApplication::createGame() {
 
 
 void PythonApplication::createListeners() {
-    Rule::GameRoot::getSingleton().addRefereeListener(&this->strategie);
+    Rule::GameRoot::getSingleton().addVisionListener(&this->strategie);
     Rule::GameRoot::getSingleton().addRefereeListener(&this->strategie);
 }
 

@@ -5,7 +5,8 @@
 using namespace boost::python;
 using namespace boost::python::api;
 
-StrategieEngine::StrategieEngine(){
+StrategieEngine::StrategieEngine(int buffersLenght)
+        : visionFrames(buffersLenght) {
    this->initPythonInterpreter();
 }
 
@@ -44,6 +45,8 @@ void StrategieEngine::updatePosition(){
 		if (pFunc) {
 			//Boucle principale du thread 
 			while(!this->threadTerminated){
+                std::cout << "calling Python" << std::endl;
+                std::cout << this->visionFrames.getSize() << std::endl;
 				pFunc(); //Call Python function
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
@@ -73,12 +76,17 @@ void StrategieEngine::terminate() {
     Py_Finalize();
 }
 
-void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> visionFrames) {
-
+void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> newVisionFrames) {
+    while(!newVisionFrames.empty()){
+        std::shared_ptr<Rule::VisionFrame> framePtr;
+        framePtr = newVisionFrames.back();
+        this->visionFrames.push_front(framePtr);
+        newVisionFrames.pop();
+    }
 }
 
-void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> refereeCommand) {
-
+void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> newRefereeCommand) {
+    std::cout << "Receive a ref" << std::endl;
 }
 
 template<class T>
