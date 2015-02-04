@@ -3,6 +3,7 @@
 #include <iostream>
 #include <GameRoot.h>
 #include <RobotCommand.h>
+#include <PythonVisionFrame.h>
 using namespace boost::python;
 using namespace boost::python::api;
 
@@ -67,3 +68,12 @@ void StrategieEngine::updatePosition(){
 
 }
 
+template<class T>
+list vectorToPython(const std::vector<T>& v)
+{
+    list plist;
+    for (auto &element : v){
+        plist.append(element);
+    }
+    return plist;
+};

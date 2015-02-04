@@ -3,12 +3,10 @@ import rule_python as rule
 
 def update():
 
-    #fizzy = rule.getFizzy()
-    #print(fizzy.pose.coord.x)
-    #statement = rule.getStatement()
-    #print(statement.pose.coord.x)
-    #lol = statement
-    #print(lol.pose.coord.x)
+    pizza = rule.Pizza()
+    condiments = pizza.getCondiments()
+    print(condiments[1])
+
     for i in range(2):
         for j in range(5):
             rc = rule.RobotCommand()

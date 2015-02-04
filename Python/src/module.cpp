@@ -38,7 +38,7 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readwrite("y", &Position::y)
 	    .def_readwrite("z", &Position::z);
 
-
-
 }
+
+
 
