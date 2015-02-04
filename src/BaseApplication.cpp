@@ -25,11 +25,6 @@ void BaseApplication::initialize(){
 
 }
 
-void BaseApplication::createListeners() {
-    Rule::GameRoot::getSingleton().addRefereeListener(this);
-    Rule::GameRoot::getSingleton().addVisionListener(this);
-}
-
 void BaseApplication::createPlugins() {
     Rule::VisionPlugin *visionPlugin = new Rule::VisionPlugin(*io_service, "224.5.23.2", 10020, "VisionPlugin");
     Rule::RefereePlugin *refereePlugin = new Rule::RefereePlugin(*io_service, "224.5.23.1", 10003, "RefereePlugin");
@@ -44,5 +39,4 @@ void BaseApplication::run() {
     this->initialize();
 
     Rule::GameRoot::getSingleton().start();
-	std::cout << "out\n";
 }

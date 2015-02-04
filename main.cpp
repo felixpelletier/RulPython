@@ -1,9 +1,9 @@
-#include "ExampleApplication.h"
+#include "PythonApplication.h"
 #include <RuleException.h>
 #include <iostream>
 
 int main() {
-    ExampleApplication app;
+    PythonApplication app;
 
     try {
         app.run();

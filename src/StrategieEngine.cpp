@@ -1,37 +1,33 @@
 #include <StrategieEngine.h>
-#include <chrono>
-#include <iostream>
 #include <GameRoot.h>
-#include <RobotCommand.h>
 using namespace boost::python;
 using namespace boost::python::api;
 
 StrategieEngine::StrategieEngine(){
+   this->initPythonInterpreter();
+}
 
+void StrategieEngine::initPythonInterpreter() {
     Py_Initialize();
     PyEval_InitThreads();
-    
-    //Ajouter le dossier 'scripts' au path temporaire Python
+
     PyObject *sys = PyImport_ImportModule("sys");
     PyObject *path = PyObject_GetAttrString(sys, "path");
     PyList_Append(path, PyUnicode_FromString("./scripts"));
     PyList_Append(path, PyUnicode_FromString("./Python"));
     PyList_Append(path, PyUnicode_FromString("."));
 
-    //Relacher l'exclusivité de l'interpreteur
-    //pour pouvoir l'utiliser sur les autres threads
-    PyEval_ReleaseLock(); 
-   
-    this->updateThread = std::thread(&StrategieEngine::updatePosition, this);//Démarrage du thread
+    PyEval_ReleaseLock();
+}
+
+void StrategieEngine::launch() {
+    this->updateThread = std::thread(&StrategieEngine::updatePosition, this);
 }
 
 StrategieEngine::~StrategieEngine(){
-	this->threadTerminated = true;
-	this->updateThread.join();
-	Py_Finalize();	
+	this->terminate();
 }
 
-//Le thread démarre sur cette fonction
 void StrategieEngine::updatePosition(){
 	PyGILState_STATE gstate;
 	gstate = PyGILState_Ensure(); //Le thread aquérit l'interpreteur Python
@@ -47,7 +43,7 @@ void StrategieEngine::updatePosition(){
 			//Boucle principale du thread 
 			while(!this->threadTerminated){
 				pFunc(); //Call Python function
-                		std::this_thread::sleep_for(std::chrono::milliseconds(2));
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 
 		}
@@ -67,3 +63,17 @@ void StrategieEngine::updatePosition(){
 
 }
 
+void StrategieEngine::terminate() {
+    this->threadTerminated = true;
+    if(this->updateThread.joinable())
+        this->updateThread.join();
+    Py_Finalize();
+}
+
+void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> visionFrames) {
+
+}
+
+void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> refereeCommand) {
+
+}

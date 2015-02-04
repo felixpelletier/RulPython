@@ -10,8 +10,6 @@ std::shared_ptr<Rule::RobotCommand> statement;
 void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand);
 
 void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
-            //std::shared_ptr<Rule::RobotCommand> robotCommand_p = std::make_shared<Rule::RobotCommand>(robotCommand);
-            //Rule::GameRoot::getSingleton().addRobotCommand(robotCommand_p);
             Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
 
