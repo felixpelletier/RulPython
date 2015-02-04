@@ -6,6 +6,9 @@
 #include <RuleSSL/VisionListener.h>
 #include <RuleSSL/RefereeListener.h>
 
+using namespace boost::python;
+
+
 class StrategieEngine: public Rule::VisionListener, public Rule::RefereeListener {
 public:
     StrategieEngine();
@@ -21,6 +24,7 @@ public:
 
 private:
     std::thread updateThread;
+    template<class T> list vectorToPython(const std::vector<T>& v);
     bool threadTerminated = false;
 
 };

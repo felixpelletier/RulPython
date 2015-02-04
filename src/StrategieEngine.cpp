@@ -1,5 +1,7 @@
 #include <StrategieEngine.h>
 #include <GameRoot.h>
+#include <RobotCommand.h>
+#include <PythonVisionFrame.h>
 using namespace boost::python;
 using namespace boost::python::api;
 
@@ -63,6 +65,7 @@ void StrategieEngine::updatePosition(){
 
 }
 
+
 void StrategieEngine::terminate() {
     this->threadTerminated = true;
     if(this->updateThread.joinable())
@@ -77,3 +80,13 @@ void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::Visi
 void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> refereeCommand) {
 
 }
+
+template<class T>
+list StrategieEngine::vectorToPython(const std::vector<T>& v)
+{
+    list plist;
+    for (auto &element : v){
+        plist.append(element);
+    }
+    return plist;
+};

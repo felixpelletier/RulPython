@@ -3,7 +3,10 @@ import rule_python as rule
 
 def update():
 
-    print("caca")
+    #pizza = rule.Pizza()
+    #condiments = pizza.getCondiments()
+    #print(condiments[1])
+    print("update Python")
     for i in range(2):
         for j in range(5):
             rc = rule.RobotCommand()
