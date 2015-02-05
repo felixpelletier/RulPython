@@ -1,5 +1,7 @@
 #include <GameRoot.h>
 #include <RobotCommand.h>
+#include <VisionFrame.h>
+#include <PythonVisionFrame.h>
 #include <Pose.h>
 #include <Position.h>
 #include <boost/python.hpp>
@@ -11,6 +13,14 @@ void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
             Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
 
+Rule::PythonVisionFrame getFrame();
+Rule::PythonVisionFrame getFrame(){
+	Rule::VisionFrame frame;
+	frame.cameraId = 42;
+	Rule::PythonVisionFrame pframe = Rule::PythonVisionFrame(frame);
+	return pframe;
+}
+
 //Creates the POC module in python containing various utilities (PLUGINS)
 BOOST_PYTHON_MODULE(rule_python)
 {
@@ -18,6 +28,7 @@ BOOST_PYTHON_MODULE(rule_python)
     using namespace Rule;
 
     def("sendCommand", &sendCommand);
+    def("getFrame", &getFrame);
 
     class_<RobotCommand, std::shared_ptr<RobotCommand>>("RobotCommand", init<>())
             .def_readwrite("isTeamYellow", &RobotCommand::isTeamYellow)
@@ -38,6 +49,10 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readwrite("y", &Position::y)
 	    .def_readwrite("z", &Position::z);
 
+    class_<PythonVisionFrame>("VisionFrame", no_init)
+	    .def_readonly("cameraId", &PythonVisionFrame::cameraId);
+    
+    class_<VisionFrame::Ball>("Ball", no_init);
 }
 
 

@@ -47,7 +47,13 @@ void StrategieEngine::updatePosition(){
 		if (pFunc) {
 			//Boucle principale du thread 
 			while(!this->threadTerminated){
-				pFunc(); //Call Python function
+				try{
+					pFunc();//Call Python function
+				}
+				catch(boost::python::error_already_set){
+					PyErr_Print();	
+					throw;
+				}
                 		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 			}
 

@@ -3,9 +3,10 @@ import rule_python as rule
 
 def update():
 
-    pizza = rule.Pizza()
-    condiments = pizza.getCondiments()
-    print(condiments[1])
+    print("First")
+    frame = rule.getFrame();
+    print("Second")
+    print(frame.cameraId)
 
     for i in range(2):
         for j in range(5):

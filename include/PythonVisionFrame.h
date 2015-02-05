@@ -5,6 +5,7 @@
 #include <memory>
 #include "Pose.h"
 #include <VisionFrame.h>
+#include <boost/python.hpp>
 
 namespace Rule {
 
