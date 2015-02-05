@@ -6,7 +6,7 @@
 
 #include <boost/asio/io_service.hpp>
 
-class BaseApplication : public Rule::VisionListener, public Rule::RefereeListener {
+class BaseApplication {
 public:
     BaseApplication();
     virtual ~BaseApplication();
@@ -15,7 +15,7 @@ protected:
     virtual void initialize();
 
     virtual void createPlugins();
-    virtual void createListeners();
+    virtual void createListeners() = 0;
     virtual void createGame() = 0;
 private:
     boost::asio::io_service *io_service;

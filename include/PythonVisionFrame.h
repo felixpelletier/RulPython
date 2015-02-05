@@ -41,8 +41,8 @@ struct PythonVisionFrame
 	};
 
 	uint32 cameraId;
-    	uint32 frameId;
-    	uint32 teamCount;
+    uint32 frameId;
+    uint32 teamCount;
 	boost::python::list balls;
 	boost::python::list teams;
 	
