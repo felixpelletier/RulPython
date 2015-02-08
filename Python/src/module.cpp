@@ -13,7 +13,6 @@ void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
             Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
 
-Rule::PythonVisionFrame getFrame();
 Rule::PythonVisionFrame getFrame(){
 	Rule::VisionFrame frame;
 	frame.cameraId = 42;

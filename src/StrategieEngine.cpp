@@ -83,6 +83,7 @@ void StrategieEngine::terminate() {
 }
 
 void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> newVisionFrames) {
+    std::cout << "Receive a Vision" << std::endl;
     while(!newVisionFrames.empty()){
         std::shared_ptr<Rule::VisionFrame> framePtr;
         framePtr = newVisionFrames.back();

@@ -3,10 +3,11 @@ import rule_python as rule
 
 def update():
 
-    print("First")
-    frame = rule.getFrame();
-    print("Second")
-    print(frame.cameraId)
+    print("into Python")
+    #print("First")
+    #frame = rule.getFrame();
+    #print("Second")
+    #print(frame.cameraId)
 
     for i in range(2):
         for j in range(5):
