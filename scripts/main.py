@@ -3,14 +3,11 @@ import rule_python as rule
 
 def update():
 
-<<<<<<< HEAD
     print("First")
     frame = rule.getFrame();
     print("Second")
     print(frame.cameraId)
 
-=======
->>>>>>> 7747d47795ef3dc4b2d6ddcde5590deea5daa236
     for i in range(2):
         for j in range(5):
             rc = rule.RobotCommand()

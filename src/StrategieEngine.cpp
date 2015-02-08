@@ -47,7 +47,7 @@ void StrategieEngine::updatePosition(){
 			while(!this->threadTerminated){
 				try{
 					std::cout << "calling Python" << std::endl;
-                			std::cout << this->visionFrames.getSize() << std::endl;
+                    std::cout << this->visionFrames.getSize() << std::endl;
 					pFunc();//Call Python function
 				}
 				catch(boost::python::error_already_set){
