@@ -2,6 +2,8 @@
 #include <RobotCommand.h>
 #include <VisionFrame.h>
 #include <PythonVisionFrame.h>
+#include <RefereeCommand.h>
+#include <PythonRefereeCommand.h>
 #include <Pose.h>
 #include <Position.h>
 #include <boost/python.hpp>
@@ -62,10 +64,35 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readonly("robotId", &VisionFrame::Team::Robot::robotId) 
 	    .def_readonly("pose", &VisionFrame::Team::Robot::pose);
 
-    class_<PythonVisionFrame::Team>("Team", no_init)
+    class_<PythonVisionFrame::Team>("VisionFrame.Team", no_init)
             .def_readonly("teamId", &PythonVisionFrame::Team::teamId)
             .def_readonly("robots", &PythonVisionFrame::Team::robots)
             .def_readonly("robotCount", &PythonVisionFrame::Team::robotCount);
+    
+    class_<PythonRefereeCommand>("PythonRefereeCommand", no_init)
+	    .def_readonly("command" , &PythonRefereeCommand::command)
+	    .def_readonly("packetTimeStamp" , &PythonRefereeCommand::packetTimeStamp)
+	    .def_readonly("stage" , &PythonRefereeCommand::stage)
+	    .def_readonly("teams" , &PythonRefereeCommand::teams)
+	    .def_readonly("teamCount" , &PythonRefereeCommand::teamCount);
+    
+    class_<PythonRefereeCommand::Team>("PythonRefereeCommand.Team", no_init)
+	    .def_readonly("goalieCount" , &PythonRefereeCommand::Team::goalieCount)
+	    .def_readonly("name" , &PythonRefereeCommand::Team::name)
+	    .def_readonly("redCardsCount" , &PythonRefereeCommand::Team::redCardsCount)
+	    .def_readonly("timeoutsLeft" , &PythonRefereeCommand::Team::timeoutsLeft)
+	    .def_readonly("timeoutTime" , &PythonRefereeCommand::Team::timeoutTime)
+	    .def_readonly("yellowCardsCount" , &PythonRefereeCommand::Team::yellowCardsCount)
+	    .def_readonly("yellowCardsRemainingTime" , &PythonRefereeCommand::Team::yellowCardsRemainingTime)
+	    .def_readonly("yellowCardsRemainingTimeCount" , &PythonRefereeCommand::Team::yellowCardsRemainingTimeCount);
+
+    class_<RefereeCommand::Stage>("Stage", no_init)
+	    .def_readonly("name" , &RefereeCommand::Stage::name)
+	    .def_readonly("timeLeft" , &RefereeCommand::Stage::timeLeft);
+
+    class_<RefereeCommand::Command>("Command", no_init)
+	    .def_readonly("name" , &RefereeCommand::Command::name)
+	    .def_readonly("timeStamp" , &RefereeCommand::Command::timeStamp);
 
 }
 
