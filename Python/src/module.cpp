@@ -49,9 +49,24 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readwrite("z", &Position::z);
 
     class_<PythonVisionFrame>("VisionFrame", no_init)
-	    .def_readonly("cameraId", &PythonVisionFrame::cameraId);
+	    .def_readonly("cameraId", &PythonVisionFrame::cameraId)
+	    .def_readonly("frameId", &PythonVisionFrame::frameId)
+	    .def_readonly("teamCount", &PythonVisionFrame::teamCount)
+	    .def_readonly("balls", &PythonVisionFrame::balls)
+	    .def_readonly("teams", &PythonVisionFrame::teams);
     
-    class_<VisionFrame::Ball>("Ball", no_init);
+    class_<VisionFrame::Ball>("Ball", no_init)
+    	    .def_readonly("position", &VisionFrame::Ball::position);
+
+    class_<VisionFrame::Team::Robot>("Robot", no_init)
+	    .def_readonly("robotId", &VisionFrame::Team::Robot::robotId) 
+	    .def_readonly("pose", &VisionFrame::Team::Robot::pose);
+
+    class_<PythonVisionFrame::Team>("Team", no_init)
+            .def_readonly("teamId", &PythonVisionFrame::Team::teamId)
+            .def_readonly("robots", &PythonVisionFrame::Team::robots)
+            .def_readonly("robotCount", &PythonVisionFrame::Team::robotCount);
+
 }
 
 

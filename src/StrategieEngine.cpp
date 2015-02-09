@@ -2,6 +2,7 @@
 #include <GameRoot.h>
 #include <RobotCommand.h>
 #include <PythonVisionFrame.h>
+#include <iostream>
 using namespace boost::python;
 using namespace boost::python::api;
 
@@ -96,12 +97,13 @@ void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::R
     std::cout << "Receive a ref" << std::endl;
 }
 
-template<class T>
-list StrategieEngine::vectorToPython(const std::vector<T>& v)
-{
-    list plist;
-    for (auto &element : v){
-        plist.append(element);
+template<class T> list getPyFrames(const Streams::ThreadSafeCircularBuffer<std::shared_ptr<T>>& buffer){
+    boost::python::list plist;
+    int size = buffer.getSize();
+    for (int i = 0; i<size; i++){
+	std::shared_ptr<T> element;
+	buffer.pop_back(element);
+	plist.append(*element);
     }
     return plist;
-};
+}

@@ -3,9 +3,9 @@
 
 #include <boost/python.hpp>
 #include <thread>
-#include <RuleSSL/VisionListener.h>
-#include <RuleSSL/RefereeListener.h>
-#include <RuleSSL/ThreadSafeCircularBuffer.h>
+#include <VisionListener.h>
+#include <RefereeListener.h>
+#include <ThreadSafeCircularBuffer.h>
 
 using namespace boost::python;
 
@@ -26,7 +26,7 @@ public:
 private:
     std::thread updateThread;
     Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>> visionFrames;
-    template<class T> list vectorToPython(const std::vector<T>& v);
+    template<class T> list getPyFrames(const Streams::ThreadSafeCircularBuffer<std::shared_ptr<T>>& buffer);
     bool threadTerminated = false;
 
 };
