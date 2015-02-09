@@ -49,7 +49,8 @@ void StrategieEngine::updatePosition(){
 				try{
 					std::cout << "calling Python" << std::endl;
                     std::cout << this->visionFrames.getSize() << std::endl;
-					pFunc();//Call Python function
+		    			list py_frames = getPyFrames(visionFrames);
+					pFunc(py_frames);//Call Python function
 				}
 				catch(boost::python::error_already_set){
 					PyErr_Print();	
@@ -97,13 +98,14 @@ void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::R
     std::cout << "Receive a ref" << std::endl;
 }
 
-template<class T> list getPyFrames(const Streams::ThreadSafeCircularBuffer<std::shared_ptr<T>>& buffer){
+list StrategieEngine::getPyFrames(Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>>& buffer){
     boost::python::list plist;
     int size = buffer.getSize();
-    for (int i = 0; i<size; i++){
-	std::shared_ptr<T> element;
-	buffer.pop_back(element);
-	plist.append(*element);
+    for (int i = 0; i < size; i++){
+	std::shared_ptr<Rule::VisionFrame> visionFrame;
+	buffer.pop_back(&visionFrame);
+	Rule::PythonVisionFrame pyframe = Rule::PythonVisionFrame(*visionFrame); 
+	plist.append(pyframe);
     }
     return plist;
 }

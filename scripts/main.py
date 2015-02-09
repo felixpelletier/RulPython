@@ -1,9 +1,10 @@
 import rule_python as rule
 
 
-def update():
+def update(vision_frames):
 
     print("into Python")
+    print("vision_frames size: " + str(len(vision_frames)))
     #print("First")
     #frame = rule.getFrame();
     #print("Second")

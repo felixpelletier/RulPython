@@ -26,7 +26,7 @@ public:
 private:
     std::thread updateThread;
     Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>> visionFrames;
-    template<class T> list getPyFrames(const Streams::ThreadSafeCircularBuffer<std::shared_ptr<T>>& buffer);
+    list getPyFrames(Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>>& buffer);
     bool threadTerminated = false;
 
 };

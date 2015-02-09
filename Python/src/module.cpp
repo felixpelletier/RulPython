@@ -39,11 +39,11 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readwrite("stop", &RobotCommand::stop)
 	    .def_readwrite("pose", &RobotCommand::pose);
     
-    class_<Pose>("Pose")
+    class_<Pose, std::shared_ptr<Pose>>("Pose")
 	    .def_readwrite("coord", &Pose::coord)
 	    .def_readwrite("orientation", &Pose::orientation);
 
-    class_<Position>("Position")
+    class_<Position, std::shared_ptr<Position>>("Position")
 	    .def_readwrite("x", &Position::x)
 	    .def_readwrite("y", &Position::y)
 	    .def_readwrite("z", &Position::z);
