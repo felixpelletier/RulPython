@@ -46,6 +46,7 @@ BOOST_PYTHON_MODULE(rule_python)
     class_<Pose, std::shared_ptr<Pose>>("Pose")
 	    .def_readwrite("coord", &Pose::coord)
 	    .def_readwrite("orientation", &Pose::orientation);
+
     //Position
     class_<Position, std::shared_ptr<Position>>("Position")
 	    .def_readwrite("x", &Position::x)
@@ -73,7 +74,6 @@ BOOST_PYTHON_MODULE(rule_python)
             .def_readonly("robotCount", &PythonVisionFrame::Team::robotCount);
 
     //RefereeCommand
-    
     class_<PythonRefereeCommand>("RefereeCommand", no_init)
 	    .def_readonly("command" , &PythonRefereeCommand::command)
 	    .def_readonly("packetTimeStamp" , &PythonRefereeCommand::packetTimeStamp)

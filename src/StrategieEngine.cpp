@@ -2,12 +2,13 @@
 #include <GameRoot.h>
 #include <RobotCommand.h>
 #include <PythonVisionFrame.h>
+#include <PythonRefereeCommand.h>
 #include <iostream>
 using namespace boost::python;
 using namespace boost::python::api;
 
-StrategieEngine::StrategieEngine(int buffersLenght)
-        : visionFrames(buffersLenght) {
+StrategieEngine::StrategieEngine(int buffersLength)
+        : visionFrames(buffersLength), refereeCommands(buffersLength) {
    this->initPythonInterpreter();
 }
 
@@ -48,9 +49,11 @@ void StrategieEngine::updatePosition(){
 			while(!this->threadTerminated){
 				try{
 					std::cout << "calling Python" << std::endl;
-                    std::cout << this->visionFrames.getSize() << std::endl;
-		    			list py_frames = getPyFrames(visionFrames);
-					pFunc(py_frames);//Call Python function
+                    			std::cout << "C++ visionFrames size: " << this->visionFrames.getSize() << std::endl;
+                    			std::cout << "C++ refereeCommands size: " << this->refereeCommands.getSize() << std::endl;
+		    			list py_frames = dumpVisionBuffer(visionFrames);
+					list py_refereeCommands = dumpRefereeBuffer(refereeCommands);
+					pFunc(py_frames, py_refereeCommands);//Call Python function
 				}
 				catch(boost::python::error_already_set){
 					PyErr_Print();	
@@ -96,16 +99,34 @@ void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::Visi
 
 void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> newRefereeCommand) {
     std::cout << "Receive a ref" << std::endl;
+    while(!newRefereeCommand.empty()){
+        std::shared_ptr<Rule::RefereeCommand> refereePtr;
+        refereePtr = newRefereeCommand.back();
+        this->refereeCommands.push_front(refereePtr);
+        newRefereeCommand.pop();
+    }
 }
 
-list StrategieEngine::getPyFrames(Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>>& buffer){
+list StrategieEngine::dumpVisionBuffer(Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::VisionFrame>>& buffer){
     boost::python::list plist;
     int size = buffer.getSize();
     for (int i = 0; i < size; i++){
-	std::shared_ptr<Rule::VisionFrame> visionFrame;
-	buffer.pop_back(&visionFrame);
-	Rule::PythonVisionFrame pyframe = Rule::PythonVisionFrame(*visionFrame); 
-	plist.append(pyframe);
+	std::shared_ptr<Rule::VisionFrame> element;
+	buffer.pop_back(&element);
+	Rule::PythonVisionFrame pyelement = Rule::PythonVisionFrame(*element); 
+	plist.append(pyelement);
+    }
+    return plist;
+}
+
+list StrategieEngine::dumpRefereeBuffer(Streams::ThreadSafeCircularBuffer<std::shared_ptr<Rule::RefereeCommand>>& buffer){
+    boost::python::list plist;
+    int size = buffer.getSize();
+    for (int i = 0; i < size; i++){
+	std::shared_ptr<Rule::RefereeCommand> element;
+	buffer.pop_back(&element);
+	Rule::PythonRefereeCommand pyelement = Rule::PythonRefereeCommand(*element); 
+	plist.append(pyelement);
     }
     return plist;
 }
