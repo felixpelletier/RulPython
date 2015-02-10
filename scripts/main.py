@@ -5,6 +5,12 @@ def update(vision_frames):
 
     print("into Python")
     print("vision_frames size: " + str(len(vision_frames)))
+    if vision_frames:
+        team = vision_frames[0].teams[0]
+        robot = team.robots[0]
+        coords = robot.pose.coord
+        print("vision_frames[0].teams[0].robots[0].pose.coord.x: "
+              + str(coords.x))
     #print("First")
     #frame = rule.getFrame();
     #print("Second")
