@@ -1,10 +1,13 @@
 #include "PythonApplication.h"
 #include <RuleException.h>
 #include <iostream>
+#include <csignal>
+
+PythonApplication app;
+void appterminate(int sig);
 
 int main() {
-    PythonApplication app;
-
+    signal(SIGINT, &appterminate);
     try {
         app.run();
     } catch(Rule::RuleException &e) {
@@ -13,4 +16,8 @@ int main() {
     }
 
     return 0;
+}
+
+void appterminate(int sig){
+    app.terminate();
 }

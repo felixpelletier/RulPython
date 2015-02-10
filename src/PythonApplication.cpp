@@ -2,9 +2,12 @@
 
 #include <GameRoot.h>
 
-
 void PythonApplication::createGame() {
     this->strategie.launch();
+}
+
+void PythonApplication::terminate(){
+    this->strategie.terminate();
 }
 
 

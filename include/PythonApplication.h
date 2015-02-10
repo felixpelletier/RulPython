@@ -7,6 +7,7 @@
 class PythonApplication : public BaseApplication {
 public:
     PythonApplication() {}
+    void terminate();
 protected:
     virtual void createListeners() override;
     virtual void createGame() override;
