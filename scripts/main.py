@@ -16,19 +16,19 @@ def update(vision_frames, referee_commands):
     print("referee_commands size: " + str(len(referee_commands)))
     if referee_commands:
         command = referee_commands[0].command
-        print("referee_commands[0].command.name: "
-              + str(command.name))
+        print("referee_commands[0].time_stamp: "
+              + str(command.time_stamp))
 
     if vision_frames:
         for team in vision_frames[-1].teams:
             for robot in team.robots:
-                rc = rule.RobotCommand()
-                rc.isTeamYellow = team.teamId == 1
+                rc = rule.robot_command()
+                rc.is_team_yellow = team.team_id == 1
                 rc.dribble = True
-                rc.dribbleSpeed = 1
+                rc.dribble_speed = 1
                 rc.kick = True
-                rc.kickSpeed = 2
-                rc.robotId = robot.robotId
+                rc.kick_speed = 2
+                rc.robot_id = robot.robot_id
                 rc.stop = False
                 x = 1000 - robot.pose.coord.x
                 y = 1000 - robot.pose.coord.y
@@ -36,4 +36,4 @@ def update(vision_frames, referee_commands):
                 rc.pose.coord.x = x / magnitude
                 rc.pose.coord.y = y / magnitude
                 rc.pose.orientation = 0 - robot.pose.orientation
-                rule.sendCommand(rc)
+                rule.send_command(rc)
