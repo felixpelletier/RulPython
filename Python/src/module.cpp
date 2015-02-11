@@ -25,12 +25,12 @@ BOOST_PYTHON_MODULE(rule_python)
 
     //RobotCommand
     class_<RobotCommand, std::shared_ptr<RobotCommand>>("robot_command", init<>())
-            .def_readwrite("isTeamYellow", &RobotCommand::isTeamYellow)
+            .def_readwrite("is_team_yellow", &RobotCommand::isTeamYellow)
 	    .def_readwrite("dribble", &RobotCommand::dribble)
-	    .def_readwrite("dribbleSpeed", &RobotCommand::dribbleSpeed)
+	    .def_readwrite("dribble_speed", &RobotCommand::dribbleSpeed)
 	    .def_readwrite("kick", &RobotCommand::kick)
-	    .def_readwrite("kickSpeed", &RobotCommand::kickSpeed)
-	    .def_readwrite("robotId", &RobotCommand::robotId)
+	    .def_readwrite("kick_speed", &RobotCommand::kickSpeed)
+	    .def_readwrite("robot_id", &RobotCommand::robotId)
 	    .def_readwrite("stop", &RobotCommand::stop)
 	    .def_readwrite("pose", &RobotCommand::pose);
    
@@ -49,9 +49,8 @@ BOOST_PYTHON_MODULE(rule_python)
     {
     scope vision_frame =
     class_<PythonVisionFrame>("vision_frame", no_init)
-	    .def_readonly("cameraId", &PythonVisionFrame::cameraId)
-	    .def_readonly("frameId", &PythonVisionFrame::frameId)
-	    .def_readonly("teamCount", &PythonVisionFrame::teamCount)
+	    .def_readonly("camera_id", &PythonVisionFrame::cameraId)
+	    .def_readonly("frame_id", &PythonVisionFrame::frameId)
 	    .def_readonly("balls", &PythonVisionFrame::balls)
 	    .def_readonly("teams", &PythonVisionFrame::teams);
     
@@ -59,13 +58,12 @@ BOOST_PYTHON_MODULE(rule_python)
     	    .def_readonly("position", &VisionFrame::Ball::position);
 
     class_<VisionFrame::Team::Robot>("robot", no_init) //Should this be in it's own namespace?
-	    .def_readonly("robotId", &VisionFrame::Team::Robot::robotId) 
+	    .def_readonly("robot_id", &VisionFrame::Team::Robot::robotId) 
 	    .def_readonly("pose", &VisionFrame::Team::Robot::pose);
 
     class_<PythonVisionFrame::Team>("team", no_init)
-            .def_readonly("teamId", &PythonVisionFrame::Team::teamId)
-            .def_readonly("robots", &PythonVisionFrame::Team::robots)
-            .def_readonly("robotCount", &PythonVisionFrame::Team::robotCount);
+            .def_readonly("team_id", &PythonVisionFrame::Team::teamId)
+            .def_readonly("robots", &PythonVisionFrame::Team::robots);
     }
 
     //RefereeCommand
@@ -73,28 +71,26 @@ BOOST_PYTHON_MODULE(rule_python)
     scope referee_command =
     class_<PythonRefereeCommand>("referee_command", no_init)
 	    .def_readonly("command" , &PythonRefereeCommand::command)
-	    .def_readonly("packetTimeStamp" , &PythonRefereeCommand::packetTimeStamp)
+	    .def_readonly("packet_time_stamp" , &PythonRefereeCommand::packetTimeStamp)
 	    .def_readonly("stage" , &PythonRefereeCommand::stage)
-	    .def_readonly("teams" , &PythonRefereeCommand::teams)
-	    .def_readonly("teamCount" , &PythonRefereeCommand::teamCount);
+	    .def_readonly("teams" , &PythonRefereeCommand::teams);
     
     class_<PythonRefereeCommand::Team>("team", no_init)
-	    .def_readonly("goalieCount" , &PythonRefereeCommand::Team::goalieCount)
+	    .def_readonly("goalie_count" , &PythonRefereeCommand::Team::goalieCount)
 	    .def_readonly("name" , &PythonRefereeCommand::Team::name)
-	    .def_readonly("redCardsCount" , &PythonRefereeCommand::Team::redCardsCount)
-	    .def_readonly("timeoutsLeft" , &PythonRefereeCommand::Team::timeoutsLeft)
-	    .def_readonly("timeoutTime" , &PythonRefereeCommand::Team::timeoutTime)
-	    .def_readonly("yellowCardsCount" , &PythonRefereeCommand::Team::yellowCardsCount)
-	    .def_readonly("yellowCardsRemainingTime" , &PythonRefereeCommand::Team::yellowCardsRemainingTime)
-	    .def_readonly("yellowCardsRemainingTimeCount" , &PythonRefereeCommand::Team::yellowCardsRemainingTimeCount);
+	    .def_readonly("red_cards_count" , &PythonRefereeCommand::Team::redCardsCount)
+	    .def_readonly("timeouts_left" , &PythonRefereeCommand::Team::timeoutsLeft)
+	    .def_readonly("timeout_time" , &PythonRefereeCommand::Team::timeoutTime)
+	    .def_readonly("yellow_cards_count" , &PythonRefereeCommand::Team::yellowCardsCount)
+	    .def_readonly("yellow_cards_remaining_time" , &PythonRefereeCommand::Team::yellowCardsRemainingTime);
 
-    class_<RefereeCommand::Stage>("stage", no_init) //Should this be in it's own namespace?
+    class_<RefereeCommand::Stage>("stage", no_init)
 	    .def_readonly("name" , &RefereeCommand::Stage::name)
-	    .def_readonly("timeLeft" , &RefereeCommand::Stage::timeLeft);
+	    .def_readonly("time_left" , &RefereeCommand::Stage::timeLeft);
 
-    class_<RefereeCommand::Command>("command", no_init) //Should this be in it's own namespace?
+    class_<RefereeCommand::Command>("command", no_init)
 	    .def_readonly("name" , &RefereeCommand::Command::name)
-	    .def_readonly("timeStamp" , &RefereeCommand::Command::timeStamp);
+	    .def_readonly("time_stamp" , &RefereeCommand::Command::timeStamp);
     }
 
 }
