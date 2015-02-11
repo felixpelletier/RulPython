@@ -16,8 +16,8 @@ def update(vision_frames, referee_commands):
     print("referee_commands size: " + str(len(referee_commands)))
     if referee_commands:
         command = referee_commands[0].command
-        print("referee_commands[0].time_stamp: "
-              + str(command.time_stamp))
+        print("referee_commands[0].command.name: "
+              + str(command.name))
 
     if vision_frames:
         for team in vision_frames[-1].teams:

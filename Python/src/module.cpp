@@ -88,7 +88,7 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readonly("name" , &RefereeCommand::Stage::name)
 	    .def_readonly("time_left" , &RefereeCommand::Stage::timeLeft);
 
-    class_<RefereeCommand::Command>("command", no_init)
+    class_<RefereeCommand::Command>("Command", no_init) //starts with uppercase to prevent name collision
 	    .def_readonly("name" , &RefereeCommand::Command::name)
 	    .def_readonly("time_stamp" , &RefereeCommand::Command::timeStamp);
     }
