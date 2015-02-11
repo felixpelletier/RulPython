@@ -39,40 +39,27 @@ void StrategieEngine::updatePosition(){
 
 	object pModule, pFunc;
 	
-	pModule = import("main");
-
-	if (pModule != NULL) {
+	try{
+		pModule = import("main");
 		pFunc = pModule.attr("update");
-
-		if (pFunc) {
-			//Boucle principale du thread 
-			while(!this->threadTerminated){
-				try{
-					std::cout << "calling Python" << std::endl;
-                    			std::cout << "C++ visionFrames size: " << this->visionFrames.getSize() << std::endl;
-                    			std::cout << "C++ refereeCommands size: " << this->refereeCommands.getSize() << std::endl;
-		    			list py_frames = dumpVisionBuffer(visionFrames);
-					list py_refereeCommands = dumpRefereeBuffer(refereeCommands);
-					pFunc(py_frames, py_refereeCommands);//Call Python function
-				}
-				catch(boost::python::error_already_set){
-					PyErr_Print();	
-					throw;
-				}
-                		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-			}
-
-		}
-		else {
-		    if (PyErr_Occurred())
-			PyErr_Print();
-		    fprintf(stderr, "Cannot find function");
-		}
-		
 	}
-	else {
-		PyErr_Print();
-		fprintf(stderr, "Failed to load ");
+	catch(boost::python::error_already_set){
+		PyErr_Print();	
+		throw;
+	}
+
+	//Boucle principale du thread 
+	while(!this->threadTerminated){
+		try{
+			list py_frames = dumpVisionBuffer(visionFrames);
+			list py_refereeCommands = dumpRefereeBuffer(refereeCommands);
+			pFunc(py_frames, py_refereeCommands);//Call Python function
+		}
+		catch(boost::python::error_already_set){
+			PyErr_Print();	
+			throw;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	PyGILState_Release (gstate); 
@@ -88,7 +75,6 @@ void StrategieEngine::terminate() {
 }
 
 void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::VisionFrame>> newVisionFrames) {
-    std::cout << "Receive a Vision" << std::endl;
     while(!newVisionFrames.empty()){
         std::shared_ptr<Rule::VisionFrame> framePtr;
         framePtr = newVisionFrames.back();
@@ -98,7 +84,6 @@ void StrategieEngine::visionFrameRetrieved(std::queue<std::shared_ptr<Rule::Visi
 }
 
 void StrategieEngine::refereeCommandRetrieved(std::queue<std::shared_ptr<Rule::RefereeCommand>> newRefereeCommand) {
-    std::cout << "Receive a ref" << std::endl;
     while(!newRefereeCommand.empty()){
         std::shared_ptr<Rule::RefereeCommand> refereePtr;
         refereePtr = newRefereeCommand.back();
