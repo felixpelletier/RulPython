@@ -1,4 +1,5 @@
 import rule_python as rule
+import math
 
 
 def update(vision_frames, referee_commands):
@@ -18,17 +19,21 @@ def update(vision_frames, referee_commands):
         print("referee_commands[0].command.name: "
               + str(command.name))
 
-    for i in range(2):
-        for j in range(5):
-            rc = rule.RobotCommand()
-            rc.isTeamYellow = i == 1
-            rc.dribble = True
-            rc.dribbleSpeed = 1
-            rc.kick = True
-            rc.kickSpeed = 2
-            rc.robotId = j
-            rc.stop = False
-            rc.pose.coord.x = 1
-            rc.pose.coord.y = 2
-            rc.pose.orientation = 5
-            rule.sendCommand(rc)
+    if vision_frames:
+        for team in vision_frames[-1].teams:
+            for robot in team.robots:
+                rc = rule.RobotCommand()
+                rc.isTeamYellow = team.teamId == 1
+                rc.dribble = True
+                rc.dribbleSpeed = 1
+                rc.kick = True
+                rc.kickSpeed = 2
+                rc.robotId = robot.robotId
+                rc.stop = False
+                x = 1000 - robot.pose.coord.x
+                y = 1000 - robot.pose.coord.y
+                magnitude = math.sqrt(x*x + y*y)
+                rc.pose.coord.x = x / magnitude
+                rc.pose.coord.y = y / magnitude
+                rc.pose.orientation = 0 - robot.pose.orientation
+                rule.sendCommand(rc)
