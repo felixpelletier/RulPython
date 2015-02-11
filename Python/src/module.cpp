@@ -15,21 +15,13 @@ void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
             Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
 
-Rule::PythonVisionFrame getFrame(){
-	Rule::VisionFrame frame;
-	frame.cameraId = 42;
-	Rule::PythonVisionFrame pframe = Rule::PythonVisionFrame(frame);
-	return pframe;
-}
-
 //Creates the rule_python module in python containing various utilities (PLUGINS)
 BOOST_PYTHON_MODULE(rule_python)
 {
     using namespace boost::python;
     using namespace Rule;
 
-    def("sendCommand", &sendCommand);
-    def("getFrame", &getFrame);
+    def("sendCommand", &sendCommand, "Send a RobotCommand to the engine");
 
     //RobotCommand
     class_<RobotCommand, std::shared_ptr<RobotCommand>>("RobotCommand", init<>())
@@ -44,8 +36,8 @@ BOOST_PYTHON_MODULE(rule_python)
    
     //Pose
     class_<Pose, std::shared_ptr<Pose>>("Pose")
-	    .def_readwrite("coord", &Pose::coord)
-	    .def_readwrite("orientation", &Pose::orientation);
+	    .def_readwrite("coord", &Pose::coord, "C'est la coordonée, dumbass")
+	    .def_readwrite("orientation", &Pose::orientation, "C'est l'orientation, dumbass");
 
     //Position
     class_<Position, std::shared_ptr<Position>>("Position")
@@ -54,6 +46,8 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readwrite("z", &Position::z);
 
     //VisionFrame
+    {
+    scope vision_frame =
     class_<PythonVisionFrame>("VisionFrame", no_init)
 	    .def_readonly("cameraId", &PythonVisionFrame::cameraId)
 	    .def_readonly("frameId", &PythonVisionFrame::frameId)
@@ -68,12 +62,15 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readonly("robotId", &VisionFrame::Team::Robot::robotId) 
 	    .def_readonly("pose", &VisionFrame::Team::Robot::pose);
 
-    class_<PythonVisionFrame::Team>("VisionFrame.Team", no_init)
+    class_<PythonVisionFrame::Team>("Team", no_init)
             .def_readonly("teamId", &PythonVisionFrame::Team::teamId)
             .def_readonly("robots", &PythonVisionFrame::Team::robots)
             .def_readonly("robotCount", &PythonVisionFrame::Team::robotCount);
+    }
 
     //RefereeCommand
+    {
+    scope referee_command =
     class_<PythonRefereeCommand>("RefereeCommand", no_init)
 	    .def_readonly("command" , &PythonRefereeCommand::command)
 	    .def_readonly("packetTimeStamp" , &PythonRefereeCommand::packetTimeStamp)
@@ -81,7 +78,7 @@ BOOST_PYTHON_MODULE(rule_python)
 	    .def_readonly("teams" , &PythonRefereeCommand::teams)
 	    .def_readonly("teamCount" , &PythonRefereeCommand::teamCount);
     
-    class_<PythonRefereeCommand::Team>("RefereeCommand.Team", no_init)
+    class_<PythonRefereeCommand::Team>("Team", no_init)
 	    .def_readonly("goalieCount" , &PythonRefereeCommand::Team::goalieCount)
 	    .def_readonly("name" , &PythonRefereeCommand::Team::name)
 	    .def_readonly("redCardsCount" , &PythonRefereeCommand::Team::redCardsCount)
@@ -98,6 +95,7 @@ BOOST_PYTHON_MODULE(rule_python)
     class_<RefereeCommand::Command>("Command", no_init) //Should this be in it's own namespace?
 	    .def_readonly("name" , &RefereeCommand::Command::name)
 	    .def_readonly("timeStamp" , &RefereeCommand::Command::timeStamp);
+    }
 
 }
 
