@@ -51,8 +51,8 @@ void StrategieEngine::updatePosition(){
 	//Boucle principale du thread 
 	while(!this->threadTerminated){
 		try{
-			list py_frames = dumpVisionBuffer(visionFrames);
-			list py_refereeCommands = dumpRefereeBuffer(refereeCommands);
+			list py_frames = dumpVisionBuffer(this->visionFrames);
+			list py_refereeCommands = dumpRefereeBuffer(this->refereeCommands);
 			pFunc(py_frames, py_refereeCommands);//Call Python function
 		}
 		catch(boost::python::error_already_set){
@@ -96,10 +96,10 @@ list StrategieEngine::dumpVisionBuffer(Streams::ThreadSafeCircularBuffer<std::sh
     boost::python::list plist;
     int size = buffer.getSize();
     for (int i = 0; i < size; i++){
-	std::shared_ptr<Rule::VisionFrame> element;
-	buffer.pop_back(&element);
-	Rule::PythonVisionFrame pyelement = Rule::PythonVisionFrame(*element); 
-	plist.append(pyelement);
+        std::shared_ptr<Rule::VisionFrame> element;
+        buffer.pop_back(&element);
+        Rule::PythonVisionFrame pyelement = Rule::PythonVisionFrame(*element);
+        plist.append(pyelement);
     }
     return plist;
 }
@@ -108,10 +108,10 @@ list StrategieEngine::dumpRefereeBuffer(Streams::ThreadSafeCircularBuffer<std::s
     boost::python::list plist;
     int size = buffer.getSize();
     for (int i = 0; i < size; i++){
-	std::shared_ptr<Rule::RefereeCommand> element;
-	buffer.pop_back(&element);
-	Rule::PythonRefereeCommand pyelement = Rule::PythonRefereeCommand(*element); 
-	plist.append(pyelement);
+        std::shared_ptr<Rule::RefereeCommand> element;
+        buffer.pop_back(&element);
+        Rule::PythonRefereeCommand pyelement = Rule::PythonRefereeCommand(*element);
+        plist.append(pyelement);
     }
     return plist;
 }

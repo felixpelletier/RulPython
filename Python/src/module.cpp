@@ -9,8 +9,6 @@
 #include <boost/python.hpp>
 #include <iostream>
 
-void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand);
-
 void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
             Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
 }
