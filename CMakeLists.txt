@@ -61,5 +61,24 @@ add_custom_command(TARGET copy_test_assets POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E
        copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_BINARY_DIR}/scripts)
 
+add_custom_target(copy_doc_assets)
+add_dependencies(RulFramework copy_doc_assets rule_python)
+add_custom_command(TARGET copy_doc_assets POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E
+       copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/doc ${CMAKE_CURRENT_BINARY_DIR}/doc)
+
+add_custom_target(doc_pdf
+		    COMMAND ${CMAKE_MAKE_PROGRAM} latexpdf
+		    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/)
+add_dependencies(doc_pdf rule_python copy_doc_assets)
+
+add_custom_target(doc_html
+		    COMMAND ${CMAKE_MAKE_PROGRAM} html
+		    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc/)
+add_dependencies(doc_html rule_python copy_doc_assets)
+
+add_custom_target(doc)
+add_dependencies(doc doc_pdf doc_html)
+
 set(PROTO_INSTALLED TRUE CACHE INTERNAL
     "Proto has already been installed")
