@@ -18,5 +18,5 @@ int main() {
 }
 
 void appterminate(int sig){
-    app.terminate();
+    throw;
 }
