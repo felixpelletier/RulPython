@@ -11,7 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-
+   examples
+   reference
 
 Indices and tables
 ==================
@@ -20,6 +21,4 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. automodule:: rule_python
-   :members:
-   :undoc-members:
+
