@@ -8,12 +8,11 @@
 #include <Position.h>
 #include <boost/python.hpp>
 #include <iostream>
+#include <cmath>
 
-class PythonRobotCommand : public Rule::RobotCommand{
+struct PythonRobotCommand : public Rule::RobotCommand{
 
-	private:
 		Rule::VisionFrame::Team::Robot robot;	
-	public:
 		PythonRobotCommand(Rule::VisionFrame::Team::Robot robot){
 			this->robotId = robot.robotId;
 			this->robot = robot;
@@ -23,6 +22,14 @@ class PythonRobotCommand : public Rule::RobotCommand{
 void sendCommand(PythonRobotCommand robotCommand);
 
 void sendCommand(PythonRobotCommand robotCommand){
+	    float r_x = robotCommand.robot.pose.coord.x;
+	    float r_y = robotCommand.robot.pose.coord.y;
+	    float x = robotCommand.pose.coord.x - r_x;
+	    float y = robotCommand.pose.coord.y - r_y;
+	    float magnitude = std::sqrt( x*x + y*y );
+	    robotCommand.pose.coord.x = x / magnitude;
+	    robotCommand.pose.coord.y = y / magnitude;
+	    robotCommand.pose.orientation -= robotCommand.robot.pose.orientation;
             Rule::GameRoot::getSingleton().addRobotCommand(std::make_shared<Rule::RobotCommand>(robotCommand));
 }
 

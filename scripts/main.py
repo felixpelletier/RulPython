@@ -28,7 +28,7 @@ def update(vision_frames, referee_commands):
                 rc.kick = True
                 rc.kickSpeed = 2
                 rc.stop = False
-                rc.pose.coord.x = 1
-                rc.pose.coord.y = 2
-                rc.pose.orientation = 5
+                rc.pose.coord.x = 1000
+                rc.pose.coord.y = 1000
+                rc.pose.orientation = 0
                 rule.sendCommand(rc)
