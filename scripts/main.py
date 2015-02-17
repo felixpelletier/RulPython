@@ -18,17 +18,17 @@ def update(vision_frames, referee_commands):
         print("referee_commands[0].command.name: "
               + str(command.name))
 
-    for i in range(2):
-        for j in range(5):
-            rc = rule.RobotCommand()
-            rc.isTeamYellow = i == 1
-            rc.dribble = True
-            rc.dribbleSpeed = 1
-            rc.kick = True
-            rc.kickSpeed = 2
-            rc.robotId = j
-            rc.stop = False
-            rc.pose.coord.x = 1
-            rc.pose.coord.y = 2
-            rc.pose.orientation = 5
-            rule.sendCommand(rc)
+    if vision_frames:
+        for team in vision_frames[-1].teams:
+            for robot in team.robots:
+                rc = rule.RobotCommand(robot)
+                rc.isTeamYellow = team.teamId
+                rc.dribble = True
+                rc.dribbleSpeed = 1
+                rc.kick = True
+                rc.kickSpeed = 2
+                rc.stop = False
+                rc.pose.coord.x = 1
+                rc.pose.coord.y = 2
+                rc.pose.orientation = 5
+                rule.sendCommand(rc)

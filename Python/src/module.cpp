@@ -9,10 +9,21 @@
 #include <boost/python.hpp>
 #include <iostream>
 
-void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand);
+class PythonRobotCommand : public Rule::RobotCommand{
 
-void sendCommand(std::shared_ptr<Rule::RobotCommand> robotCommand){
-            Rule::GameRoot::getSingleton().addRobotCommand(robotCommand);
+	private:
+		Rule::VisionFrame::Team::Robot robot;	
+	public:
+		PythonRobotCommand(Rule::VisionFrame::Team::Robot robot){
+			this->robotId = robot.robotId;
+			this->robot = robot;
+		}
+};
+
+void sendCommand(PythonRobotCommand robotCommand);
+
+void sendCommand(PythonRobotCommand robotCommand){
+            Rule::GameRoot::getSingleton().addRobotCommand(std::make_shared<Rule::RobotCommand>(robotCommand));
 }
 
 Rule::PythonVisionFrame getFrame(){
@@ -32,15 +43,14 @@ BOOST_PYTHON_MODULE(rule_python)
     def("getFrame", &getFrame);
 
     //RobotCommand
-    class_<RobotCommand, std::shared_ptr<RobotCommand>>("RobotCommand", init<>())
-            .def_readwrite("isTeamYellow", &RobotCommand::isTeamYellow)
-	    .def_readwrite("dribble", &RobotCommand::dribble)
-	    .def_readwrite("dribbleSpeed", &RobotCommand::dribbleSpeed)
-	    .def_readwrite("kick", &RobotCommand::kick)
-	    .def_readwrite("kickSpeed", &RobotCommand::kickSpeed)
-	    .def_readwrite("robotId", &RobotCommand::robotId)
-	    .def_readwrite("stop", &RobotCommand::stop)
-	    .def_readwrite("pose", &RobotCommand::pose);
+    class_<PythonRobotCommand>("RobotCommand", init<VisionFrame::Team::Robot>())
+            .def_readwrite("isTeamYellow", &PythonRobotCommand::isTeamYellow)
+	    .def_readwrite("dribble", &PythonRobotCommand::dribble)
+	    .def_readwrite("dribbleSpeed", &PythonRobotCommand::dribbleSpeed)
+	    .def_readwrite("kick", &PythonRobotCommand::kick)
+	    .def_readwrite("kickSpeed", &PythonRobotCommand::kickSpeed)
+	    .def_readwrite("stop", &PythonRobotCommand::stop)
+	    .def_readwrite("pose", &PythonRobotCommand::pose);
    
     //Pose
     class_<Pose, std::shared_ptr<Pose>>("Pose")
